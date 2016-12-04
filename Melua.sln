@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeluaLib", "Melua\MeluaLib.csproj", "{0AAFAA0C-78ED-42B7-8017-28FF7C5758EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Melua", "Test.Melua\Test.Melua.csproj", "{C49EB096-8DFA-42D3-8061-C8F7664E0BE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AAFAA0C-78ED-42B7-8017-28FF7C5758EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AAFAA0C-78ED-42B7-8017-28FF7C5758EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AAFAA0C-78ED-42B7-8017-28FF7C5758EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AAFAA0C-78ED-42B7-8017-28FF7C5758EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C49EB096-8DFA-42D3-8061-C8F7664E0BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49EB096-8DFA-42D3-8061-C8F7664E0BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C49EB096-8DFA-42D3-8061-C8F7664E0BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C49EB096-8DFA-42D3-8061-C8F7664E0BE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
