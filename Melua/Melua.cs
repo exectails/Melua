@@ -149,6 +149,18 @@ namespace MeluaLib
 
 			return 0;
 		}
+
+		/// <summary>
+		/// Registers the given function under the given name and safes a
+		/// reference to the function.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="functionName"></param>
+		/// <param name="function"></param>
+		public static void melua_register(IntPtr L, string functionName, LuaNativeFunction function)
+		{
+			lua_register(L, functionName, Melua.CreateFunctionReference(L, function));
+		}
 	}
 
 	public enum LuaLib
