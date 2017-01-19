@@ -53,6 +53,18 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void luaL_argcheck(IntPtr L, bool cond, int narg, [MarshalAs(UnmanagedType.LPStr)] string extramsg);
 
+		// int luaL_newmetatable (lua_State *L, const char *tname);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int luaL_newmetatable(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string tname);
+
+		// void luaL_getmetatable (lua_State *L, const char *tname);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_getmetatable(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string tname);
+
+		// void *luaL_checkudata (lua_State *L, int narg, const char *tname);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_checkudata(IntPtr L, int narg, [MarshalAs(UnmanagedType.LPStr)] string tname);
+
 		// #define luaL_dostring(L, s) (luaL_loadstring(L, s) || lua_pcall(L, 0, LUA_MULTRET, 0))
 		public static int luaL_dostring(IntPtr L, string s)
 		{
