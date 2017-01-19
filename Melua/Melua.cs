@@ -139,13 +139,13 @@ namespace MeluaLib
 		{
 			auxopen(L, "ipairs", CreateFunctionReference(L, Melua.luaB_ipairs), CreateFunctionReference(L, Melua.ipairsaux));
 			auxopen(L, "pairs", CreateFunctionReference(L, Melua.luaB_pairs), CreateFunctionReference(L, Melua.luaB_next));
-			lua_register(L, "pcall", CreateFunctionReference(L, Melua.luaB_pcall));
-			lua_register(L, "print", CreateFunctionReference(L, Melua.luaB_print));
-			lua_register(L, "tonumber", CreateFunctionReference(L, Melua.luaB_tonumber));
-			lua_register(L, "tostring", CreateFunctionReference(L, Melua.luaB_tostring));
-			lua_register(L, "type", CreateFunctionReference(L, Melua.luaB_type));
-			lua_register(L, "unpack", CreateFunctionReference(L, Melua.luaB_unpack));
-			lua_register(L, "xpcall", CreateFunctionReference(L, Melua.luaB_xpcall));
+			melua_register(L, "pcall", luaB_pcall);
+			melua_register(L, "print", luaB_print);
+			melua_register(L, "tonumber", luaB_tonumber);
+			melua_register(L, "tostring", luaB_tostring);
+			melua_register(L, "type", luaB_type);
+			melua_register(L, "unpack", luaB_unpack);
+			melua_register(L, "xpcall", luaB_xpcall);
 
 			return 0;
 		}
