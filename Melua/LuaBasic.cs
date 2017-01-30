@@ -9,12 +9,31 @@ namespace MeluaLib
 	// Basic Lua API
 	public static partial class Melua
 	{
+		public const string LUA_VERSION = "Lua 5.1";
+		public const string LUA_RELEASE = "Lua 5.1.5";
+		public const int LUA_VERSION_NUM = 501;
+		public const string LUA_COPYRIGHT = "Copyright (C) 1994-2012 Lua.org, PUC-Rio";
+		public const string LUA_AUTHORS = "R. Ierusalimschy, L. H. de Figueiredo & W. Celes";
+
+		public const string LUA_SIGNATURE = "\033Lua";
+
 		public const int LUA_MULTRET = -1;
+
 		public const int LUA_REGISTRYINDEX = -10000;
 		public const int LUA_ENVIRONINDEX = -10001;
 		public const int LUA_GLOBALSINDEX = -10002;
 
+		// #define lua_upvalueindex(i)	(LUA_GLOBALSINDEX-(i))
+		public static int lua_upvalueindex(int i)
+		{
+			return (LUA_GLOBALSINDEX - i);
+		}
+
 		public const int LUA_YIELD = 1;
+		public const int LUA_ERRRUN = 2;
+		public const int LUA_ERRSYNTAX = 3;
+		public const int LUA_ERRMEM = 4;
+		public const int LUA_ERRERR = 5;
 
 		public const int LUA_TNONE = -1;
 		public const int LUA_TNIL = 0;
@@ -336,12 +355,6 @@ namespace MeluaLib
 		public static void lua_pushliteral(IntPtr L, string s)
 		{
 			lua_pushlstring(L, s, s.Length);
-		}
-
-		// #define lua_upvalueindex(i)	(LUA_GLOBALSINDEX-(i))
-		public static int lua_upvalueindex(int i)
-		{
-			return (LUA_GLOBALSINDEX - i);
 		}
 	}
 }
