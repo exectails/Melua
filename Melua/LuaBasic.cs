@@ -230,9 +230,13 @@ namespace MeluaLib
 
 		// lua_newuserdata
 
-		// lua_getmetatable
+		// int lua_getmetatable (lua_State *L, int index);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_getmetatable(IntPtr L, int index);
 
-		// lua_getfenv
+		// void lua_getfenv (lua_State *L, int index);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void lua_getfenv(IntPtr L, int index);
 
 		// Set functions (stack -> Lua)
 		// ------------------------------------------------------------------
