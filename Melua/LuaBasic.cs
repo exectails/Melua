@@ -367,7 +367,7 @@ namespace MeluaLib
 		}
 
 		// #define lua_islightuserdata(L,n)        (lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
-		public static bool lua_isnil(IntPtr L, int n)
+		public static bool lua_islightuserdata(IntPtr L, int n)
 		{
 			return (lua_type(L, n) == LUA_TLIGHTUSERDATA);
 		}
@@ -391,7 +391,7 @@ namespace MeluaLib
 		}
 
 		// #define lua_isnone(L,n)         (lua_type(L, (n)) == LUA_TNONE)
-		public static bool lua_isthread(IntPtr L, int n)
+		public static bool lua_isnone(IntPtr L, int n)
 		{
 			return (lua_type(L, n) == LUA_TNONE);
 		}
