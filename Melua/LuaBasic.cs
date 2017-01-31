@@ -245,15 +245,21 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int lua_setfield(IntPtr L, int idx, [MarshalAs(UnmanagedType.LPStr)] string k);
 
-		// lua_rawset
+		// void lua_rawset (lua_State *L, int index);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void lua_rawset(IntPtr L, int index);
 
-		// lua_rawseti
+		// void lua_rawseti (lua_State *L, int index, int n);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void lua_rawseti(IntPtr L, int index, int n);
 
 		// LUA_API int lua_setmetatable (lua_State *L, int objindex)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int lua_setmetatable(IntPtr L, int objindex);
 
-		// lua_setfenv
+		// int lua_setfenv (lua_State *L, int index);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_setfenv(IntPtr L, int index);
 
 		// `Load` and `call` functions (load and run Lua code)
 		// ------------------------------------------------------------------
