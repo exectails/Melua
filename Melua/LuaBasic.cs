@@ -162,7 +162,9 @@ namespace MeluaLib
 
 		// lua_touserdata
 
-		// lua_tothread
+		// lua_State *lua_tothread (lua_State *L, int index);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_tothread(IntPtr L, int index);
 
 		// LUA_API const void *lua_topointer (lua_State *L, int idx)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -205,7 +207,9 @@ namespace MeluaLib
 
 		// lua_pushlightuserdata
 
-		// lua_pushthread
+		// int lua_pushthread (lua_State *L);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_pushthread(IntPtr L);
 
 		// Get functions (Lua -> stack)
 		// ------------------------------------------------------------------
