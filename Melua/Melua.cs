@@ -23,6 +23,18 @@ namespace MeluaLib
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void lua_Hook(IntPtr L, IntPtr ar);
 
+		public struct LuaLib
+		{
+			public readonly string Name;
+			public readonly LuaNativeFunction Func;
+
+			public LuaLib(string name, LuaNativeFunction func)
+			{
+				this.Name = name;
+				this.Func = func;
+			}
+		}
+
 		/// <summary>
 		/// Creates and saves reference to function, so it's not garbage
 		/// collected.
@@ -49,57 +61,11 @@ namespace MeluaLib
 		{
 			foreach (var lib in libsToLoad)
 			{
-				string name;
-				LuaNativeFunction func;
-
-				switch (lib)
-				{
-					case LuaLib.Base:
-						name = "";
-						func = luaopen_base;
-						break;
-					case LuaLib.BaseSafe:
-						name = "";
-						func = meluaopen_basesafe;
-						break;
-					case LuaLib.Package:
-						name = "package";
-						func = luaopen_package;
-						break;
-					case LuaLib.Table:
-						name = "table";
-						func = luaopen_table;
-						break;
-					case LuaLib.IO:
-						name = "io";
-						func = luaopen_io;
-						break;
-					case LuaLib.OS:
-						name = "os";
-						func = luaopen_os;
-						break;
-					case LuaLib.String:
-						name = "string";
-						func = luaopen_string;
-						break;
-					case LuaLib.Math:
-						name = "math";
-						func = luaopen_math;
-						break;
-					case LuaLib.Debug:
-						name = "debug";
-						func = luaopen_debug;
-						break;
-
-					default:
-						throw new Exception("Unknown lua lib '" + lib + "'.");
-				}
-
-				lua_pushcfunction(L, func);
-				lua_pushstring(L, name);
+				lua_pushcfunction(L, lib.Func);
+				lua_pushstring(L, lib.Name);
 				lua_call(L, 1, 0);
 
-				GC.KeepAlive(func);
+				GC.KeepAlive(lib.Func);
 			}
 		}
 
@@ -109,7 +75,17 @@ namespace MeluaLib
 		/// <param name="L"></param>
 		public static void melua_openlibs(IntPtr L)
 		{
-			melua_openlib(L, LuaLib.Base, LuaLib.Package, LuaLib.Table, LuaLib.IO, LuaLib.OS, LuaLib.String, LuaLib.Math, LuaLib.Debug);
+			melua_openlib(L, new[]
+			{
+				new LuaLib("", luaopen_base),
+				new LuaLib("package", luaopen_package),
+				new LuaLib("table", luaopen_table),
+				new LuaLib("io", luaopen_io),
+				new LuaLib("os", luaopen_os),
+				new LuaLib("string", luaopen_string),
+				new LuaLib("math", luaopen_math),
+				new LuaLib("debug", luaopen_debug),
+			});
 		}
 
 		/// <summary>
@@ -176,18 +152,5 @@ namespace MeluaLib
 
 			return str;
 		}
-	}
-
-	public enum LuaLib
-	{
-		Base,
-		BaseSafe,
-		Package,
-		Table,
-		IO,
-		OS,
-		String,
-		Math,
-		Debug,
 	}
 }
