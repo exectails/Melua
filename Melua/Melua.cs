@@ -161,6 +161,21 @@ namespace MeluaLib
 		{
 			lua_register(L, functionName, Melua.CreateFunctionReference(L, function));
 		}
+
+		/// <summary>
+		/// Returns the formatted string after pushing it onto the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
+		/// <returns></returns>
+		public static string melua_pushstring(IntPtr L, string format, params object[] args)
+		{
+			var str = string.Format(format, args);
+			lua_pushstring(L, str);
+
+			return str;
+		}
 	}
 
 	public enum LuaLib

@@ -191,9 +191,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void lua_pushstring(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string s);
 
-		// lua_pushvfstring
+		// lua_pushvfstring (use melua_pushstring)
 
-		// lua_pushfstring
+		// lua_pushfstring (use melua_pushstring)
 
 		// static void lua_pushcclosure(lua_State*L,lua_CFunction fn,int n)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
