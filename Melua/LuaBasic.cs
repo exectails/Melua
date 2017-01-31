@@ -348,7 +348,11 @@ namespace MeluaLib
 			lua_pushcclosure(L, f, 0);
 		}
 
-		// lua_strlen
+		// #define lua_strlen(L,i)         lua_objlen(L, (i))
+		public static int lua_strlen(IntPtr L, int i)
+		{
+			return lua_objlen(L, i);
+		}
 
 		// #define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)
 		public static bool lua_isfunction(IntPtr L, int n)
@@ -362,7 +366,11 @@ namespace MeluaLib
 			return (lua_type(L, n) == LUA_TTABLE);
 		}
 
-		// lua_islightuserdata
+		// #define lua_islightuserdata(L,n)        (lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
+		public static bool lua_isnil(IntPtr L, int n)
+		{
+			return (lua_type(L, n) == LUA_TLIGHTUSERDATA);
+		}
 
 		// #define lua_isnil(L,n)(lua_type(L,(n))==0)
 		public static bool lua_isnil(IntPtr L, int n)
@@ -376,9 +384,17 @@ namespace MeluaLib
 			return (lua_type(L, n) == LUA_TBOOLEAN);
 		}
 
-		// lua_isthread
+		// #define lua_isthread(L,n)       (lua_type(L, (n)) == LUA_TTHREAD)
+		public static bool lua_isthread(IntPtr L, int n)
+		{
+			return (lua_type(L, n) == LUA_TTHREAD);
+		}
 
-		// lua_isnone
+		// #define lua_isnone(L,n)         (lua_type(L, (n)) == LUA_TNONE)
+		public static bool lua_isthread(IntPtr L, int n)
+		{
+			return (lua_type(L, n) == LUA_TNONE);
+		}
 
 		// #define lua_isnoneornil(L, n)	(lua_type(L, (n)) <= 0)
 		public static bool lua_isnoneornil(IntPtr L, int n)
