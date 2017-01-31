@@ -467,7 +467,9 @@ namespace MeluaLib
 		public const int LUA_MASKLINE = (1 << LUA_HOOKLINE);
 		public const int LUA_MASKCOUNT = (1 << LUA_HOOKCOUNT);
 
-		// lua_Hook
+		// typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate void lua_Hook(IntPtr L, IntPtr ar);
 
 		// lua_getstack
 

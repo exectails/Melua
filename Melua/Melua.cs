@@ -19,10 +19,6 @@ namespace MeluaLib
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int LuaNativeNFunction(IntPtr L, int index);
 
-		// typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate void lua_Hook(IntPtr L, IntPtr ar);
-
 		public struct LuaLib
 		{
 			public readonly string Name;
