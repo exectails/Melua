@@ -120,7 +120,9 @@ namespace MeluaLib
 			return (type == LUA_TSTRING || type == LUA_TNUMBER);
 		}
 
-		// lua_iscfunction
+		// int (lua_iscfunction) (lua_State *L, int idx);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern bool lua_iscfunction(IntPtr L, int idx);
 
 		// lua_isuserdata
 
@@ -132,11 +134,17 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern IntPtr lua_typename(IntPtr L, int t);
 
-		// lua_equal
+		// int (lua_equal) (lua_State *L, int idx1, int idx2);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_equal(IntPtr L, int idx1, int idx2);
 
-		// lua_rawqual
+		// int (lua_rawqual) (lua_State *L, int idx1, int idx2);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_rawqual(IntPtr L, int idx1, int idx2);
 
-		// lua_lessthan
+		// int (lua_lessthan) (lua_State *L, int idx1, int idx2);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_lessthan(IntPtr L, int idx1, int idx2);
 
 		// lua_Number lua_tonumber (lua_State *L, int index);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -158,7 +166,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int lua_objlen(IntPtr L, int idx);
 
-		// lua_tocfunction
+		// lua_CFunction (lua_tocfunction) (lua_State *L, int idx);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern LuaNativeFunction lua_tocfunction(IntPtr L, int idx);
 
 		// lua_touserdata
 
@@ -214,7 +224,9 @@ namespace MeluaLib
 		// Get functions (Lua -> stack)
 		// ------------------------------------------------------------------
 
-		// lua_gettable
+		// void (lua_gettable) (lua_State *L, int idx);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void lua_gettable(IntPtr L, int idx);
 
 		// static void lua_getfield(lua_State*L,int idx,const char*k)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -313,7 +325,9 @@ namespace MeluaLib
 		public const int LUA_GCSETPAUSE = 6;
 		public const int LUA_GCSETSTEPMUL = 7;
 
-		// lua_gc
+		// int (lua_gc) (lua_State *L, int what, int data);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_gc(IntPtr L, int what, int data);
 
 		// Misc functions
 		// ------------------------------------------------------------------
