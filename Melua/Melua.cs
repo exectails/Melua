@@ -106,6 +106,16 @@ namespace MeluaLib
 		/// to the state.
 		/// </summary>
 		/// <param name="L"></param>
+		public static void melua_opensafelibs(IntPtr L)
+		{
+			melua_openlib(L, new LuaLib("", meluaopen_basesafe));
+		}
+
+		/// <summary>
+		/// Adds a safe subset of functions from the base library
+		/// to the state.
+		/// </summary>
+		/// <param name="L"></param>
 		/// <returns></returns>
 		internal static int meluaopen_basesafe(IntPtr L)
 		{
