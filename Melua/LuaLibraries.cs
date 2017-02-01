@@ -8,6 +8,10 @@ namespace MeluaLib
 {
 	public static partial class Melua
 	{
+		// static void luaL_openlibs(lua_State*L)
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_openlibs(IntPtr L);
+
 		// LUALIB_API int luaopen_base (lua_State *L)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int luaopen_base(IntPtr L);
