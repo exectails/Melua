@@ -130,9 +130,12 @@ namespace MeluaLib
 		// Some useful "macros"
 		// ------------------------------------------------------------------
 
-		// void luaL_argcheck (lua_State *L, int cond, int narg, const char *extramsg);
-		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public static extern void luaL_argcheck(IntPtr L, bool cond, int narg, [MarshalAs(UnmanagedType.LPStr)] string extramsg);
+		// #define luaL_argcheck(L, cond,numarg,extramsg)  ((void)((cond) || luaL_argerror(L, (numarg), (extramsg))))
+		public static void luaL_argcheck(IntPtr L, bool cond, int narg, string extramsg)
+		{
+			if (!cond)
+				luaL_argerror(L, narg, extramsg);
+		}
 
 		// #define luaL_checkstring(L,n)(luaL_checklstring(L,(n),NULL))
 		public static string luaL_checkstring(IntPtr L, int n)
@@ -194,9 +197,11 @@ namespace MeluaLib
 			return (luaL_loadstring(L, s) != 0 || lua_pcall(L, 0, LUA_MULTRET, 0) != 0) ? 1 : 0;
 		}
 
-		// void luaL_getmetatable (lua_State *L, const char *tname);
-		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public static extern void luaL_getmetatable(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string tname);
+		// #define luaL_getmetatable(L,n)  (lua_getfield(L, LUA_REGISTRYINDEX, (n)))
+		public static int luaL_getmetatable(IntPtr L, string n)
+		{
+			return lua_getfield(L, LUA_REGISTRYINDEX, n);
+		}
 
 		// #define luaL_opt(L,f,n,d)	(lua_isnoneornil(L,(n)) ? (d) : f(L,(n)))
 		public static int luaL_opt(IntPtr L, LuaNativeNFunction f, int n, int d)
