@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Aura development team - Licensed under GNU GPL
 // For more information, see license file in the main folder
 
+using System;
 using Xunit;
 
 namespace MeluaLib.Test
@@ -67,6 +68,22 @@ namespace MeluaLib.Test
 
 			Melua.lua_pushstring(L, "0x12AB34");
 			Assert.Equal(0x12AB34, Melua.lua_tonumber(L, -1));
+		}
+
+		[Fact]
+		public void tocfunction()
+		{
+			var L = Melua.luaL_newstate();
+			var n = 0;
+
+			Melua.melua_register(L, "foo", _ => { n += 1; return 0; });
+			Melua.melua_register(L, "bar", _ => { var func = Melua.lua_tocfunction(L, 1); func(L); return 0; });
+
+			Melua.luaL_dostring(L, "foo()");
+			Assert.Equal(1, n);
+
+			Melua.luaL_dostring(L, "bar(foo)");
+			Assert.Equal(2, n);
 		}
 	}
 }
