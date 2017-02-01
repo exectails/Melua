@@ -20,9 +20,9 @@ namespace MeluaLib
 		{
 		}
 
-		// luaL_openlib
+		// luaL_openlib (use melua_openlib)
 
-		// luaL_register (use melua_register)
+		// luaL_register (use melua_openlib)
 
 		// luaL_getmetafield
 
@@ -30,21 +30,29 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern bool luaL_callmeta(IntPtr L, int obj, [MarshalAs(UnmanagedType.LPStr)] string ev);
 
-		// luaL_typerror
+		// int (luaL_typerror) (lua_State *L, int narg, const char *tname);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int luaL_typerror(IntPtr L, int narg, [MarshalAs(UnmanagedType.LPStr)] string tname);
 
-		// luaL_argerror
+		// int (luaL_argerror) (lua_State *L, int numarg, const char *extramsg);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int luaL_argerror(IntPtr L, int numarg, [MarshalAs(UnmanagedType.LPStr)] string extramsg);
 
 		// static const char* luaL_checklstring(lua_State*L,int numArg,size_t*l)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern IntPtr luaL_checklstring(IntPtr L, int numArg, IntPtr l);
 
-		// luaL_optlstring
+		// const char *(luaL_optlstring) (lua_State *L, int numArg, const char *def, size_t *l);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr luaL_optlstring(IntPtr L, int numArg, [MarshalAs(UnmanagedType.LPStr)] string def, IntPtr l);
 
 		// static lua_Number luaL_checknumber(lua_State*L,int narg)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern double luaL_checknumber(IntPtr L, int narg);
 
-		// luaL_optnumber
+		// lua_Number (luaL_optnumber) (lua_State *L, int nArg, lua_Number def);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern double luaL_optnumber(IntPtr L, int nArg, double def);
 
 		// static lua_Integer luaL_checkinteger(lua_State*L,int numArg)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -56,7 +64,9 @@ namespace MeluaLib
 			return luaL_opt(L, luaL_checkinteger, narg, def);
 		}
 
-		// luaL_checkstack
+		// void (luaL_checkstack) (lua_State *L, int sz, const char *msg);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_checkstack(IntPtr L, int sz, [MarshalAs(UnmanagedType.LPStr)] string msg);
 
 		// LUALIB_API void luaL_checktype (lua_State *L, int narg, int t)
 		public static void luaL_checktype(IntPtr L, int narg, int t)
@@ -85,9 +95,13 @@ namespace MeluaLib
 
 		// luaL_checkoption
 
-		// luaL_ref
+		// int (luaL_ref) (lua_State *L, int t);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int luaL_ref(IntPtr L, int t);
 
-		// luaL_unref
+		// void (luaL_unref) (lua_State *L, int t, int ref);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_unref(IntPtr L, int t, int reference);
 
 		// static int luaL_loadfile(lua_State*L,const char*filename)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -107,7 +121,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern IntPtr luaL_newstate();
 
-		// luaL_gsub
+		// const char *(luaL_gsub) (lua_State *L, const char *s, const char *p, const char *r);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int luaL_gsub(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string s, [MarshalAs(UnmanagedType.LPStr)] string p, [MarshalAs(UnmanagedType.LPStr)] string r);
 
 		// luaL_findtable
 
@@ -115,7 +131,7 @@ namespace MeluaLib
 		// ------------------------------------------------------------------
 
 		// void luaL_argcheck (lua_State *L, int cond, int narg, const char *extramsg);
-		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void luaL_argcheck(IntPtr L, bool cond, int narg, [MarshalAs(UnmanagedType.LPStr)] string extramsg);
 
 		// #define luaL_checkstring(L,n)(luaL_checklstring(L,(n),NULL))
@@ -126,15 +142,37 @@ namespace MeluaLib
 			return val;
 		}
 
-		// luaL_optstring
+		// #define luaL_optstring(L,n,d)   (luaL_optlstring(L, (n), (d), NULL))
+		public static string luaL_optstring(IntPtr L, int n, string d)
+		{
+			var ptr = luaL_optlstring(L, n, d, IntPtr.Zero);
+			var val = Marshal.PtrToStringAnsi(ptr);
+			return val;
+		}
 
-		// luaL_checkint
+		// #define luaL_checkint(L,n)      ((int)luaL_checkinteger(L, (n)))
+		public static int luaL_checkint(IntPtr L, int n)
+		{
+			return luaL_checkinteger(L, n);
+		}
 
-		// luaL_optint
+		// #define luaL_optint(L,n,d)      ((int)luaL_optinteger(L, (n), (d)))
+		public static int luaL_optint(IntPtr L, int n, int d)
+		{
+			return luaL_optinteger(L, n, d);
+		}
 
-		// luaL_checklong
+		// #define luaL_checklong(L,n)      ((int)luaL_checkinteger(L, (n)))
+		public static long luaL_checklong(IntPtr L, int n)
+		{
+			return luaL_checkinteger(L, n);
+		}
 
-		// luaL_optlong
+		// #define luaL_optlong(L,n,d)      ((int)luaL_optinteger(L, (n), (d)))
+		public static long luaL_optlong(IntPtr L, int n, long d)
+		{
+			return luaL_optinteger(L, n, (int)d);
+		}
 
 		// #define luaL_typename(L,i)	lua_typename(L, lua_type(L,(i)))
 		public static string luaL_typename(IntPtr L, int i)
