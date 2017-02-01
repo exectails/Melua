@@ -85,7 +85,7 @@ namespace MeluaLib
 
 		// void *luaL_checkudata (lua_State *L, int narg, const char *tname);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-		public static extern void luaL_checkudata(IntPtr L, int narg, [MarshalAs(UnmanagedType.LPStr)] string tname);
+		public static extern IntPtr luaL_checkudata(IntPtr L, int narg, [MarshalAs(UnmanagedType.LPStr)] string tname);
 
 		// LUALIB_API void luaL_where (lua_State *L, int level)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
