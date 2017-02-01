@@ -9,28 +9,16 @@ namespace MeluaLib
 	// Auxiliary Lua API
 	public static partial class Melua
 	{
-		// LUALIB_API int luaL_getn (lua_State *L, int t) 
-		public static int luaL_getn(IntPtr L, int t)
+		// #define luaL_getn(L,i)          ((int)lua_objlen(L, i))
+		public static int luaL_getn(IntPtr L, int i)
 		{
-			int n;
-			t = abs_index(L, t);
-			lua_pushliteral(L, "n");
-			lua_rawget(L, t);
-
-			if ((n = checkint(L, 1)) >= 0)
-				return n;
-
-			getsizes(L);
-			lua_pushvalue(L, t);
-			lua_rawget(L, -2);
-
-			if ((n = checkint(L, 2)) >= 0)
-				return n;
-
-			return lua_objlen(L, t);
+			return lua_objlen(L, i);
 		}
 
-		// luaL_setn
+		// #define luaL_setn(L,i,j)        ((void)0)  /* no op! */
+		public static void luaL_setn(IntPtr L, int i, int j)
+		{
+		}
 
 		// luaL_openlib
 
@@ -45,7 +33,7 @@ namespace MeluaLib
 		// luaL_typerror
 
 		// luaL_argerror
-		
+
 		// static const char* luaL_checklstring(lua_State*L,int numArg,size_t*l)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern IntPtr luaL_checklstring(IntPtr L, int numArg, IntPtr l);
@@ -61,7 +49,7 @@ namespace MeluaLib
 		// static lua_Integer luaL_checkinteger(lua_State*L,int numArg)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int luaL_checkinteger(IntPtr L, int numArg);
-		
+
 		// LUALIB_API lua_Integer (luaL_optinteger) (lua_State *L, int nArg, lua_Integer def);
 		public static int luaL_optinteger(IntPtr L, int narg, int def)
 		{
@@ -147,7 +135,7 @@ namespace MeluaLib
 		// luaL_checklong
 
 		// luaL_optlong
-		
+
 		// #define luaL_typename(L,i)	lua_typename(L, lua_type(L,(i)))
 		public static string luaL_typename(IntPtr L, int i)
 		{
@@ -155,7 +143,7 @@ namespace MeluaLib
 			var val = Marshal.PtrToStringAnsi(ptr);
 			return val;
 		}
-		
+
 		// #define luaL_dofile(L, fn) (luaL_loadfile(L, fn) || lua_pcall(L, 0, LUA_MULTRET, 0))
 		public static int luaL_dofile(IntPtr L, string fn)
 		{
@@ -167,17 +155,17 @@ namespace MeluaLib
 		{
 			return (luaL_loadstring(L, s) != 0 || lua_pcall(L, 0, LUA_MULTRET, 0) != 0) ? 1 : 0;
 		}
-		
+
 		// void luaL_getmetatable (lua_State *L, const char *tname);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void luaL_getmetatable(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string tname);
-		
+
 		// #define luaL_opt(L,f,n,d)	(lua_isnoneornil(L,(n)) ? (d) : f(L,(n)))
 		public static int luaL_opt(IntPtr L, LuaNativeNFunction f, int n, int d)
 		{
 			return (lua_isnoneornil(L, n) ? d : f(L, n));
 		}
-		
+
 		// Generic Buffer manipulation
 		// ------------------------------------------------------------------
 
@@ -198,36 +186,5 @@ namespace MeluaLib
 		// luaL_addvalue
 
 		// luaL_pushresult
-
-		// #define abs_index(L, i)		((i) > 0 || (i) <= LUA_REGISTRYINDEX ? (i) : lua_gettop(L) + (i) + 1)
-		internal static int abs_index(IntPtr L, int i)
-		{
-			return (i > 0 || i <= LUA_REGISTRYINDEX ? i : lua_gettop(L) + i + 1);
-		}
-
-		//static int checkint(lua_State* L, int topop)
-		internal static int checkint(IntPtr L, int topop)
-		{
-			int n = (lua_type(L, -1) == LUA_TNUMBER) ? lua_tointeger(L, -1) : -1;
-			lua_pop(L, topop);
-			return n;
-		}
-
-		// static void getsizes(lua_State* L)
-		internal static void getsizes(IntPtr L)
-		{
-			lua_getfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");
-			if (lua_isnil(L, -1))
-			{
-				lua_pop(L, 1);
-				lua_newtable(L);
-				lua_pushvalue(L, -1);
-				lua_setmetatable(L, -2);
-				lua_pushliteral(L, "kv");
-				lua_setfield(L, -2, "__mode");
-				lua_pushvalue(L, -1);
-				lua_setfield(L, LUA_REGISTRYINDEX, "LUA_SIZES");
-			}
-		}
 	}
 }
