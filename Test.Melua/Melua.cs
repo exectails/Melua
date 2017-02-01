@@ -2,6 +2,7 @@
 // For more information, see license file in the main folder
 
 using System;
+using System.Runtime.InteropServices;
 using Xunit;
 
 namespace MeluaLib.Test
@@ -84,6 +85,94 @@ namespace MeluaLib.Test
 
 			Melua.luaL_dostring(L, "bar(foo)");
 			Assert.Equal(2, n);
+		}
+
+		[Fact]
+		public void userdata()
+		{
+			var L = Melua.luaL_newstate();
+			Melua.melua_opensafelibs(L);
+
+			var n1 = 0;
+
+			// Ctor
+			Melua.luaL_register(L, "Test", new[]
+			{
+				new MeluaLib.Melua.LuaLib("new", NL =>
+				{
+					var test = new UserDataTest() { N1 = 1234 };
+					var size = Marshal.SizeOf(test);
+
+					var ptr = Melua.lua_newuserdata(L, size);
+					Melua.luaL_getmetatable(L, "Melua.Test");
+					Melua.lua_setmetatable(L, -2);
+
+					Marshal.StructureToPtr(test, ptr, true);
+
+					return 1;
+				})
+			});
+
+			// Meta table for test userdata type
+			Melua.luaL_newmetatable(L, "Melua.Test");
+			Melua.lua_pushstring(L, "__index");
+			Melua.lua_pushvalue(L, -2);
+			Melua.lua_settable(L, -3);
+
+			Melua.luaL_register(L, null, new[]
+			{
+				new MeluaLib.Melua.LuaLib("setN1", _ =>
+				{
+					var ptr = Melua.luaL_checkudata(L, 1, "Melua.Test");
+					var val = Melua.luaL_checkinteger(L,2);
+
+					// Either marshal back and forth or use unsafe
+					var test = (UserDataTest)Marshal.PtrToStructure(ptr, typeof(UserDataTest));
+					test.N1 = val;
+					Marshal.StructureToPtr(test, ptr, true);
+
+					//unsafe
+					//{
+					//	var test = (UserDataTest*)ptr;
+					//	test->N1 = val;
+					//}
+
+					return 0;
+				}),
+				new MeluaLib.Melua.LuaLib("getN1", _ =>
+				{
+					var ptr = Melua.luaL_checkudata(L, 1, "Melua.Test");
+					var test = (UserDataTest)Marshal.PtrToStructure(ptr, typeof(UserDataTest));
+
+					Melua.lua_pushinteger(L, test.N1);
+
+					return 1;
+				})
+			});
+
+			// Test method
+			Melua.melua_register(L, "testgetn1", _ =>
+			{
+				n1 = Melua.lua_tointeger(L, -1);
+
+				return 0;
+			});
+
+			var result = Melua.luaL_dostring(L, @"
+local t = Test.new()
+t:setN1(5678)
+testgetn1(t:getN1())
+");
+
+			if (result != 0)
+				throw new Exception(Melua.lua_tostring(L, -1));
+
+			Assert.Equal(n1, 5678);
+		}
+
+		private struct UserDataTest
+		{
+			public int N1;
 		}
 	}
 }
