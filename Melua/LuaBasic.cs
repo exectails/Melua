@@ -124,7 +124,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern bool lua_iscfunction(IntPtr L, int idx);
 
-		// lua_isuserdata
+		// int (lua_isuserdata) (lua_State *L, int idx);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern bool lua_isuserdata(IntPtr L, int idx);
 
 		// static int lua_type(lua_State*L,int idx)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -170,7 +172,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern LuaNativeFunction lua_tocfunction(IntPtr L, int idx);
 
-		// lua_touserdata
+		// void *(lua_touserdata) (lua_State *L, int idx);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_touserdata(IntPtr L, int idx);
 
 		// lua_State *lua_tothread (lua_State *L, int index);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -244,7 +248,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void lua_createtable(IntPtr L, int narray, int nrec);
 
-		// lua_newuserdata
+		// void *(lua_newuserdata) (lua_State *L, size_t sz);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_newuserdata(IntPtr L, int sz);
 
 		// int lua_getmetatable (lua_State *L, int index);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
