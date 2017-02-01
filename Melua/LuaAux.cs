@@ -20,9 +20,43 @@ namespace MeluaLib
 		{
 		}
 
-		// luaL_openlib (use melua_openlib)
+		// void luaI_openlib (lua_State *L, const char *libname, const luaL_Reg *l, int nup)
+		public static void luaL_openlib(IntPtr L, string libname, LuaLib[] libs, int nup)
+		{
+			if (libname != null)
+			{
+				var size = libs.Length;
 
-		// luaL_register (use melua_openlib)
+				luaL_findtable(L, LUA_REGISTRYINDEX, "_LOADED", 1);
+				lua_getfield(L, -1, libname);
+				if (!lua_istable(L, -1))
+				{
+					lua_pop(L, 1);
+
+					if (luaL_findtable(L, LUA_GLOBALSINDEX, libname, size) != IntPtr.Zero)
+						melua_error(L, "name conflict for module '{0}'", libname);
+					lua_pushvalue(L, -1);
+					lua_setfield(L, -3, libname);
+				}
+				lua_remove(L, -2);
+				lua_insert(L, -(nup + 1));
+			}
+			foreach (var l in libs)
+			{
+				int i;
+				for (i = 0; i < nup; i++)
+					lua_pushvalue(L, -nup);
+				lua_pushcclosure(L, l.Func, nup);
+				lua_setfield(L, -(nup + 2), l.Name);
+			}
+			lua_pop(L, nup);
+		}
+
+		// void (luaL_register) (lua_State *L, const char *libname, const luaL_Reg *l)
+		public static void luaL_register(IntPtr L, string libname, LuaLib[] libs)
+		{
+			luaL_openlib(L, libname, libs, 0);
+		}
 
 		// luaL_getmetafield
 
@@ -125,7 +159,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int luaL_gsub(IntPtr L, [MarshalAs(UnmanagedType.LPStr)] string s, [MarshalAs(UnmanagedType.LPStr)] string p, [MarshalAs(UnmanagedType.LPStr)] string r);
 
-		// luaL_findtable
+		// const char *luaL_findtable (lua_State *L, int idx, const char *fname, int szhint);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr luaL_findtable(IntPtr L, int idx, [MarshalAs(UnmanagedType.LPStr)] string fname, int szhint);
 
 		// Some useful "macros"
 		// ------------------------------------------------------------------
