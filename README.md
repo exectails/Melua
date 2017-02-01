@@ -1,8 +1,8 @@
 Melua
 =============================================================================
 
-Melua is a set of simple .NET Lua 5.1 bindings, to use Lua "as it was
-intended". It doesn't provide any wrappers to make usage more idiomatic,
+Melua is a set of simple .NET Lua 5.1 bindings, to use Lua as it is.
+It doesn't provide any wrappers to make usage more idiomatic,
 and only adds new functions where usage of the originals is bothersome
 from .NET.
 
