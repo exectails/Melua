@@ -103,25 +103,9 @@ namespace MeluaLib
 		}
 
 		/// <summary>
-		/// C# version of luaL_error.
-		/// </summary>
-		/// <remarks>
-		/// Original: LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...)
-		/// </remarks>
-		/// <param name="L"></param>
-		/// <param name="format"></param>
-		/// <param name="args"></param>
-		public static int melua_error(IntPtr L, string format, params object[] args)
-		{
-			luaL_where(L, 1);
-			lua_pushstring(L, string.Format(format, args));
-			lua_concat(L, 2);
-			return lua_error(L);
-		}
-
-		/// <summary>
-		/// Adds a safe subset of functions from the base library
-		/// to the state.
+		/// Adds a subset of functions from the base library to the state
+		/// that are safe to be included, because they don't allow the
+		/// modification of the file system or any global states.
 		/// </summary>
 		/// <param name="L"></param>
 		public static void melua_opensafelibs(IntPtr L)
@@ -135,7 +119,7 @@ namespace MeluaLib
 		/// </summary>
 		/// <param name="L"></param>
 		/// <returns></returns>
-		internal static int meluaopen_basesafe(IntPtr L)
+		public static int meluaopen_basesafe(IntPtr L)
 		{
 			auxopen(L, "ipairs", CreateFunctionReference(L, Melua.luaB_ipairs), CreateFunctionReference(L, Melua.ipairsaux));
 			auxopen(L, "pairs", CreateFunctionReference(L, Melua.luaB_pairs), CreateFunctionReference(L, Melua.luaB_next));
@@ -148,6 +132,20 @@ namespace MeluaLib
 			melua_register(L, "xpcall", luaB_xpcall);
 
 			return 0;
+		}
+
+		/// <summary>
+		/// C# version of luaL_error.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
+		public static int melua_error(IntPtr L, string format, params object[] args)
+		{
+			luaL_where(L, 1);
+			lua_pushstring(L, string.Format(format, args));
+			lua_concat(L, 2);
+			return lua_error(L);
 		}
 
 		/// <summary>
