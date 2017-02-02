@@ -58,7 +58,9 @@ namespace MeluaLib
 			luaL_openlib(L, libname, libs, 0);
 		}
 
-		// luaL_getmetafield
+		// int (luaL_getmetafield) (lua_State *L, int obj, const char *e);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern bool luaL_getmetafield(IntPtr L, int obj, [MarshalAs(UnmanagedType.LPStr)] string e);
 
 		// LUALIB_API int luaL_callmeta (lua_State *L, int obj, const char *event)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -127,7 +129,19 @@ namespace MeluaLib
 
 		// luaL_error (use melua_error)
 
-		// luaL_checkoption
+		// int (luaL_checkoption) (lua_State *L, int narg, const char *def, const char *const lst[]);
+		public static int luaL_checkoption(IntPtr L, int narg, string def, string[] lst)
+		{
+			var name = (def != null) ? luaL_optstring(L, narg, def) : luaL_checkstring(L, narg);
+
+			for (int i = 0; i < lst.Length; ++i)
+			{
+				if (lst[i] == name)
+					return i;
+			}
+
+			return luaL_argerror(L, narg, melua_pushstring(L, "invalid option '{0}'", name));
+		}
 
 		// int (luaL_ref) (lua_State *L, int t);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
