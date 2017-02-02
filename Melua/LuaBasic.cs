@@ -35,6 +35,18 @@ namespace MeluaLib
 		public const int LUA_ERRMEM = 4;
 		public const int LUA_ERRERR = 5;
 
+		// typedef const char * (*lua_Reader) (lua_State *L, void *ud, size_t *sz);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate IntPtr LuaReaderFunction(IntPtr L, IntPtr ud, IntPtr sz);
+
+		// typedef int (*lua_Writer) (lua_State *L, const void* p, size_t sz, void* ud);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate int LuaWriterFunction(IntPtr L, IntPtr p, int sz, IntPtr ud);
+
+		// typedef void * (*lua_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate IntPtr LuaAllocFunction(IntPtr ud, IntPtr ptr, int osize, int nsize);
+
 		public const int LUA_TNONE = -1;
 		public const int LUA_TNIL = 0;
 		public const int LUA_TBOOLEAN = 1;
@@ -219,7 +231,9 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void lua_pushboolean(IntPtr L, bool b);
 
-		// lua_pushlightuserdata
+		// void (lua_pushlightuserdata) (lua_State *L, void *p);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_pushlightuserdata(IntPtr L, IntPtr p);
 
 		// int lua_pushthread (lua_State *L);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -298,11 +312,17 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern int lua_pcall(IntPtr L, int nargs, int nresults, int errfunc);
 
-		// lua_cpcall
+		// int lua_cpcall (lua_State *L, lua_CFunction func, void *ud);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_pcall(IntPtr L, LuaNativeFunction func, IntPtr ud);
 
-		// lua_load
+		// int (lua_load) (lua_State *L, lua_Reader reader, void *dt, const char *chunkname);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_load(IntPtr L, LuaReaderFunction reader, IntPtr dt, [MarshalAs(UnmanagedType.LPStr)] string chunkname);
 
-		// lua_dump
+		// int (lua_dump) (lua_State *L, lua_Writer writer, void *data);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_dump(IntPtr L, LuaWriterFunction writer, IntPtr data);
 
 		// Coroutine functions
 		// ------------------------------------------------------------------
@@ -350,9 +370,13 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern void lua_concat(IntPtr L, int n);
 
-		// lua_getallocf
+		// lua_Alloc (lua_getallocf) (lua_State *L, void **ud);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern LuaAllocFunction lua_getallocf(IntPtr L, IntPtr ud);
 
-		// lua_setallocf
+		// void lua_setallocf (lua_State *L, lua_Alloc f, void *ud);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void lua_setallocf(IntPtr L, LuaAllocFunction f, IntPtr ud);
 
 		// Some useful "macros"
 		// ------------------------------------------------------------------
