@@ -489,13 +489,30 @@ namespace MeluaLib
 		// Compatibility "macros" and functions
 		// ------------------------------------------------------------------
 
-		// lua_open
+		// #define lua_open()      luaL_newstate()
+		public static IntPtr lua_open()
+		{
+			return luaL_newstate();
+		}
 
-		// lua_getregistry
+		// #define lua_getregistry(L)      lua_pushvalue(L, LUA_REGISTRYINDEX)
+		public static void lua_getregistry(IntPtr L)
+		{
+			lua_pushvalue(L, LUA_REGISTRYINDEX);
+		}
 
-		// lua_getgccount
+		// #define lua_getgccount(L)       lua_gc(L, LUA_GCCOUNT, 0)
+		public static int lua_getgccount(IntPtr L)
+		{
+			return lua_gc(L, LUA_GCCOUNT, 0);
+		}
 
-		// lua_setlevel
+		// Hack 
+		// ------------------------------------------------------------------
+
+		// void lua_setlevel       (lua_State *from, lua_State *to);
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate void lua_setlevel(IntPtr from, IntPtr to);
 
 		// Debug API
 		// ------------------------------------------------------------------
@@ -523,9 +540,13 @@ namespace MeluaLib
 
 		// lua_setlocal
 
-		// lua_getupvalue
+		// const char *lua_getupvalue (lua_State *L, int funcindex, int n);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_getupvalue(IntPtr L, int funcindex, int n);
 
-		// lua_setupvalue
+		// const char *lua_setupvalue (lua_State *L, int funcindex, int n);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_setupvalue(IntPtr L, int funcindex, int n);
 
 		// LUA_API int lua_sethook (lua_State *L, lua_Hook func, int mask, int count)
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -533,8 +554,12 @@ namespace MeluaLib
 
 		// lua_gethook
 
-		// lua_gethookmask
+		// int lua_gethookmask (lua_State *L);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_gethookmask(IntPtr L);
 
-		// lua_gethookcount
+		// int lua_gethookcount (lua_State *L);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern int lua_gethookcount(IntPtr L);
 	}
 }
