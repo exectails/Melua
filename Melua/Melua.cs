@@ -66,14 +66,15 @@ namespace MeluaLib
 		}
 
 		/// <summary>
-		/// Calls all standard lib open functions.
+		/// Opens all standard libraries and overrides functions that
+		/// don't work properly under .NET by default (like print).
 		/// </summary>
 		/// <param name="L"></param>
 		public static void melua_openlibs(IntPtr L)
 		{
 			melua_openlib(L, new[]
 			{
-				new LuaLib("", luaopen_base),
+				new LuaLib("", meluaopen_base),
 				new LuaLib("package", luaopen_package),
 				new LuaLib("table", luaopen_table),
 				new LuaLib("io", luaopen_io),
@@ -82,6 +83,23 @@ namespace MeluaLib
 				new LuaLib("math", luaopen_math),
 				new LuaLib("debug", luaopen_debug),
 			});
+		}
+
+		/// <summary>
+		/// Calls luaopen_base and registers a custom print function
+		/// that works by default under .NET.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <returns></returns>
+		public static int meluaopen_base(IntPtr L)
+		{
+			luaopen_base(L);
+
+			// Register custom print explicitly, since the native version
+			// doesn't work by default under .NET.
+			melua_register(L, "print", luaB_print);
+
+			return 2;
 		}
 
 		/// <summary>
