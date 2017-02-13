@@ -61,7 +61,9 @@ namespace MeluaLib
 		// State manipulation
 		// ------------------------------------------------------------------
 
-		// lua_newstate (use luaL_newstate)
+		// lua_State *lua_newstate (lua_Alloc f, void *ud);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern IntPtr lua_newstate(LuaAllocFunction f, IntPtr ud);
 
 		// void lua_close (lua_State *L);
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
