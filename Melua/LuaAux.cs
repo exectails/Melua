@@ -108,7 +108,7 @@ namespace MeluaLib
 		public static void luaL_checktype(IntPtr L, int narg, int t)
 		{
 			if (lua_type(L, narg) != t)
-				melua_error(L, string.Format("{0} expected, got {1}"), lua_typename(L, t), luaL_typename(L, narg));
+				melua_error(L, "{0} expected, got {1}", lua_typename(L, t), luaL_typename(L, narg));
 		}
 
 		// LUALIB_API void luaL_checkany (lua_State *L, int narg)
