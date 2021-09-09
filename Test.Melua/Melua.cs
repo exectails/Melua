@@ -19,7 +19,7 @@ namespace MeluaLib.Test
 			Assert.Equal("123", str);
 
 			Melua.lua_newtable(L);
-			Assert.Equal(null, Melua.lua_tostring(L, -1));
+			Assert.Null(Melua.lua_tostring(L, -1));
 
 			Melua.lua_pushstring(L, "foobar");
 			Assert.Equal("foobar", Melua.lua_tostring(L, -1));
@@ -166,7 +166,7 @@ testgetn1(t:getN1())
 			if (result != 0)
 				throw new Exception(Melua.lua_tostring(L, -1));
 
-			Assert.Equal(n1, 5678);
+			Assert.Equal(5678, n1);
 		}
 
 		private struct UserDataTest
