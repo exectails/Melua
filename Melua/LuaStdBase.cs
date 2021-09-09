@@ -1,7 +1,6 @@
-﻿// Copyright (c) Aura development team - Licensed under GNU GPL
-// For more information, see license file in the main folder
+﻿using System;
 
-using System;
+#pragma warning disable IDE1006 // Naming rules
 
 namespace MeluaLib
 {
@@ -217,3 +216,5 @@ namespace MeluaLib
 		}
 	}
 }
+
+#pragma warning restore IDE1006 // Naming rules

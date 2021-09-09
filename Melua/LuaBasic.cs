@@ -1,8 +1,7 @@
-﻿// Copyright (c) Aura development team - Licensed under GNU GPL
-// For more information, see license file in the main folder
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+
+#pragma warning disable IDE1006 // Naming rules
 
 namespace MeluaLib
 {
@@ -122,8 +121,7 @@ namespace MeluaLib
 				case LUA_TNUMBER: return true;
 				case LUA_TSTRING:
 					var s = lua_tostring(L, index);
-					double d;
-					return double.TryParse(s, out d);
+					return double.TryParse(s, out _);
 			}
 		}
 
@@ -565,3 +563,5 @@ namespace MeluaLib
 		public static extern int lua_gethookcount(IntPtr L);
 	}
 }
+
+#pragma warning restore IDE1006 // Naming rules

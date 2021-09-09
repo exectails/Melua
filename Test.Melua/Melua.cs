@@ -1,9 +1,8 @@
-﻿// Copyright (c) Aura development team - Licensed under GNU GPL
-// For more information, see license file in the main folder
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using Xunit;
+
+#pragma warning disable IDE1006 // Naming rules
 
 namespace MeluaLib.Test
 {
@@ -176,3 +175,5 @@ testgetn1(t:getN1())
 		}
 	}
 }
+
+#pragma warning restore IDE1006 // Naming rules

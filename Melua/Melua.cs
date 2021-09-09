@@ -1,9 +1,8 @@
-﻿// Copyright (c) Aura development team - Licensed under GNU GPL
-// For more information, see license file in the main folder
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
+#pragma warning disable IDE1006 // Naming rules
 
 namespace MeluaLib
 {
@@ -11,7 +10,7 @@ namespace MeluaLib
 	{
 		private const string Lib = "lua51";
 
-		private static Dictionary<IntPtr, List<LuaNativeFunction>> _functions = new Dictionary<IntPtr, List<LuaNativeFunction>>();
+		private static readonly Dictionary<IntPtr, List<LuaNativeFunction>> _functions = new Dictionary<IntPtr, List<LuaNativeFunction>>();
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int LuaNativeFunction(IntPtr L);
@@ -38,8 +37,7 @@ namespace MeluaLib
 		/// <param name="function"></param>
 		public static LuaNativeFunction CreateFunctionReference(IntPtr L, LuaNativeFunction function)
 		{
-			List<LuaNativeFunction> list;
-			if (!_functions.TryGetValue(L, out list) || list == null)
+			if (!_functions.TryGetValue(L, out List<LuaNativeFunction> list) || list == null)
 				list = _functions[L] = new List<LuaNativeFunction>();
 
 			var func = new LuaNativeFunction(function);
@@ -181,3 +179,5 @@ namespace MeluaLib
 		}
 	}
 }
+
+#pragma warning restore IDE1006 // Naming rules
