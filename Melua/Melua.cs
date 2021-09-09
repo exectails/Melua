@@ -206,6 +206,98 @@ namespace MeluaLib
 
 			return format;
 		}
+
+		/// <summary>
+		/// Creates a new table on the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		public static void melua_createtable(IntPtr L)
+		{
+			lua_newtable(L);
+		}
+
+		/// <summary>
+		/// Creates a new field on the table at the top of the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void melua_createfield(IntPtr L, string name, bool value)
+		{
+			lua_pushstring(L, name);
+			lua_pushboolean(L, value);
+			lua_settable(L, -3);
+		}
+
+		/// <summary>
+		/// Creates a new field on the table at the top of the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void melua_createfield(IntPtr L, string name, int value)
+		{
+			lua_pushstring(L, name);
+			lua_pushinteger(L, value);
+			lua_settable(L, -3);
+		}
+
+		/// <summary>
+		/// Creates a new field on the table at the top of the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void melua_createfield(IntPtr L, string name, double value)
+		{
+			lua_pushstring(L, name);
+			lua_pushnumber(L, value);
+			lua_settable(L, -3);
+		}
+
+		/// <summary>
+		/// Creates a new field on the table at the top of the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		public static void melua_createfield(IntPtr L, string name, string value)
+		{
+			lua_pushstring(L, name);
+			lua_pushstring(L, value);
+			lua_settable(L, -3);
+		}
+
+		/// <summary>
+		/// Prepares a new table as a field of the table on the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="field"></param>
+		public static void melua_startsubtable(IntPtr L, int field)
+		{
+			lua_pushinteger(L, field);
+			lua_newtable(L);
+		}
+
+		/// <summary>
+		/// Prepares a new table as a field of the table on the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="field"></param>
+		public static void melua_startsubtable(IntPtr L, string field)
+		{
+			lua_pushstring(L, field);
+			lua_newtable(L);
+		}
+
+		/// <summary>
+		/// Assigns current sub-table to the field on the table on the stack.
+		/// </summary>
+		/// <param name="L"></param>
+		public static void melua_endsubtable(IntPtr L)
+		{
+			lua_settable(L, -3);
+		}
 	}
 }
 

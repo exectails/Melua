@@ -87,6 +87,55 @@ namespace MeluaLib.Test
 		}
 
 		[Fact]
+		public void createtable()
+		{
+			var L = Melua.luaL_newstate();
+			Melua.melua_openlibs(L);
+
+			var rnd = new Random(Environment.TickCount);
+
+			var foo = 0;
+			var bar = "";
+			var xyz = "";
+			var checkFoo = rnd.Next();
+			var checkBar = rnd.Next().ToString("X8").Substring(1, 6);
+			var checkXyz = rnd.Next().ToString("X8").Substring(2, 5);
+
+			Melua.melua_register(L, "getdata", NL =>
+			{
+				Melua.melua_createtable(NL);
+				Melua.melua_createfield(NL, "foo", checkFoo);
+				Melua.melua_createfield(NL, "bar", checkBar);
+
+				Melua.melua_startsubtable(NL, "foobar");
+				Melua.melua_createfield(NL, "xyz", checkXyz);
+				Melua.melua_endsubtable(NL);
+
+				return 1;
+			});
+
+			Melua.melua_register(L, "checkdata", NL =>
+			{
+				foo = Melua.luaL_checkinteger(NL, 1);
+				bar = Melua.luaL_checkstring(NL, 2);
+				xyz = Melua.luaL_checkstring(NL, 3);
+
+				Melua.lua_settop(L, 0);
+
+				return 0;
+			});
+
+			var result = Melua.luaL_dostring(L, @"
+local data = getdata()
+checkdata(data.foo, data.bar, data.foobar.xyz)
+");
+
+			Assert.Equal(checkFoo, foo);
+			Assert.Equal(checkBar, bar);
+			Assert.Equal(checkXyz, xyz);
+		}
+
+		[Fact]
 		public void userdata()
 		{
 			var L = Melua.luaL_newstate();
