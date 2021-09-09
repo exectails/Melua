@@ -6,23 +6,52 @@ using System.Runtime.InteropServices;
 
 namespace MeluaLib
 {
+	/// <summary>
+	/// Wrapper around all Lua functions.
+	/// </summary>
 	public static partial class Melua
 	{
 		private const string Lib = "lua51";
 
 		private static readonly Dictionary<IntPtr, List<LuaNativeFunction>> _functions = new Dictionary<IntPtr, List<LuaNativeFunction>>();
 
+		/// <summary>
+		/// Delegate for a function that can be registered with Lua.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <returns></returns>
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int LuaNativeFunction(IntPtr L);
 
+		/// <summary>
+		/// Delegate for a function that can be registered with Lua.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <returns></returns>
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int LuaNativeNFunction(IntPtr L, int index);
 
+		/// <summary>
+		/// Represents a Lua library, with a name and a function that is
+		/// used to set up the library.
+		/// </summary>
 		public struct LuaLib
 		{
+			/// <summary>
+			/// Returns the name of library.
+			/// </summary>
 			public readonly string Name;
+
+			/// <summary>
+			/// Returns the library setup function.
+			/// </summary>
 			public readonly LuaNativeFunction Func;
 
+			/// <summary>
+			/// Creates new instance.
+			/// </summary>
+			/// <param name="name"></param>
+			/// <param name="func"></param>
 			public LuaLib(string name, LuaNativeFunction func)
 			{
 				this.Name = name;
