@@ -142,8 +142,11 @@ namespace MeluaLib
 		/// <param name="args"></param>
 		public static int melua_error(IntPtr L, string format, params object[] args)
 		{
+			if (args.Length > 0)
+				format = string.Format(format, args);
+
 			luaL_where(L, 1);
-			lua_pushstring(L, string.Format(format, args));
+			lua_pushstring(L, format);
 			lua_concat(L, 2);
 			return lua_error(L);
 		}
@@ -169,10 +172,12 @@ namespace MeluaLib
 		/// <returns></returns>
 		public static string melua_pushstring(IntPtr L, string format, params object[] args)
 		{
-			var str = string.Format(format, args);
-			lua_pushstring(L, str);
+			if (args.Length > 0)
+				format = string.Format(format, args);
 
-			return str;
+			lua_pushstring(L, format);
+
+			return format;
 		}
 	}
 }
