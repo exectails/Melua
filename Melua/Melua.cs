@@ -179,6 +179,17 @@ namespace MeluaLib
 		}
 
 		/// <summary>
+		/// C# version of luaL_traceback, returning the stack trace directly.
+		/// </summary>
+		/// <param name="L"></param>
+		/// <param name="level"></param>
+		public static string melua_traceback(IntPtr L, int level)
+		{
+			luaL_traceback(L, L, null, 1);
+			return lua_tostring(L, -1);
+		}
+
+		/// <summary>
 		/// Registers the given function under the given name and safes a
 		/// reference to the function.
 		/// </summary>

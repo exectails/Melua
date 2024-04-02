@@ -176,6 +176,10 @@ namespace MeluaLib
 		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 		public static extern IntPtr luaL_findtable(IntPtr L, int idx, [MarshalAs(UnmanagedType.LPStr)] string fname, int szhint);
 
+		// void luaL_traceback (lua_State *L, lua_State *L1, const char *msg, int level);
+		[DllImport(Lib, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+		public static extern void luaL_traceback(IntPtr L, IntPtr L1, [MarshalAs(UnmanagedType.LPStr)] string msg, int level);
+
 		// Some useful "macros"
 		// ------------------------------------------------------------------
 
