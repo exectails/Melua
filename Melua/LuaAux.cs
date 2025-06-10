@@ -106,6 +106,9 @@ namespace MeluaLib
 		// LUALIB_API void luaL_checktype (lua_State *L, int narg, int t)
 		public static void luaL_checktype(IntPtr L, int narg, int t)
 		{
+			if (lua_gettop(L) < narg)
+				melua_error(L, "argument {0} missing", narg);
+
 			if (lua_type(L, narg) != t)
 				melua_error(L, "{0} expected, got {1}", lua_typename(L, t), luaL_typename(L, narg));
 		}
